@@ -18,7 +18,7 @@ namespace App2
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
             Xamarin.FormsMaps.Init(this, bundle);
-            SetContentView(Resource.Layout.Main);
+            SetContentView(Resource.Layout.layout1);
 
 
         }
