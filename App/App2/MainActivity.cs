@@ -15,12 +15,12 @@ namespace App2
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            global::Xamarin.Forms.Forms.Init(this, bundle);
+            //global::Xamarin.Forms.Forms.Init(this, bundle);
+            //
+            //Xamarin.FormsMaps.Init(this, bundle);
+            //SetContentView(Resource.Layout.layout1);
 
-            Xamarin.FormsMaps.Init(this, bundle);
-            SetContentView(Resource.Layout.layout1);
-
-
+            mapview
         }
     }
 }
