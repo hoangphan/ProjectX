@@ -38,16 +38,26 @@ public class ConnectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection);
         listView = (ListView) findViewById(R.id.listView);
+        listView.setEmptyView(findViewById(R.id.emptyElement));
+        DiscoverBluetoothDevices();
     }
 
     // handler for CONNECT button reaction
     public void buttonConnectClicked(View view)
     {
+        //TODO: implement conenction and go to next page
+    }
+
+    // handler for REFRESH button reaction
+    public void buttonRefreshClicked(View view)
+    {
+        listView.setEmptyView(findViewById(R.id.emptyElement));
         DiscoverBluetoothDevices();
     }
 
     protected void DiscoverBluetoothDevices()
     {
+        listView.setEmptyView(findViewById(R.id.emptyElementDiscovering));
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (mBluetoothAdapter == null) {
