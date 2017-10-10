@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ConnectionActivity extends AppCompatActivity {
 
