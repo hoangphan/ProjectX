@@ -38,7 +38,6 @@ public class ConnectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection);
         listView = (ListView) findViewById(R.id.listView);
-        listView.setEmptyView(findViewById(R.id.emptyElement));
         DiscoverBluetoothDevices();
     }
 
@@ -51,13 +50,13 @@ public class ConnectionActivity extends AppCompatActivity {
     // handler for REFRESH button reaction
     public void buttonRefreshClicked(View view)
     {
-        listView.setEmptyView(findViewById(R.id.emptyElement));
+        mDeviceList.clear();
         DiscoverBluetoothDevices();
     }
 
     protected void DiscoverBluetoothDevices()
     {
-        listView.setEmptyView(findViewById(R.id.emptyElementDiscovering));
+        mDeviceList.clear();
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (mBluetoothAdapter == null) {
