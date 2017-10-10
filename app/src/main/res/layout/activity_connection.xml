@@ -18,6 +18,8 @@
             android:layout_height="400dp"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp"
+            android:choiceMode="singleChoice"
+            android:listSelector="#9eb2ba"
             android:id="@+id/listView"/>
 
 
