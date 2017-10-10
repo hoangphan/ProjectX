@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ConnectionActivity extends AppCompatActivity {
 
@@ -25,6 +26,8 @@ public class ConnectionActivity extends AppCompatActivity {
     // constant for LOCATION permission request
     // mandatory for Bluetooth application
     private static final byte PERMISSION_REQUEST_COARSE_LOCATION = 1;
+
+    private static final UUID my_uuid = UUID.fromString("73617af7-7acc-4e59-b5db-50502a57cd04");
 
     // declaration for device bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter;
@@ -45,6 +48,7 @@ public class ConnectionActivity extends AppCompatActivity {
     public void buttonConnectClicked(View view)
     {
         //TODO: implement conenction and go to next page
+        new AcceptThread(mBluetoothAdapter, "Xapp_Server", my_uuid).run();
     }
 
     // handler for REFRESH button reaction
