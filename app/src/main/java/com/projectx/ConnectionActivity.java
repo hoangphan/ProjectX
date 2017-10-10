@@ -11,9 +11,11 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
 
 import java.util.ArrayList;
 
@@ -38,10 +40,21 @@ public class ConnectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection);
         listView = (ListView) findViewById(R.id.listView);
+        //Set background color for selected item
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
+                view.setSelected(true);
+            }
+        });
+
         DiscoverBluetoothDevices();
     }
 
-    // handler for CONNECT button reaction
+    /***
+     *
+     * @param view
+     */
     public void buttonConnectClicked(View view)
     {
         //TODO: implement conenction and go to next page
