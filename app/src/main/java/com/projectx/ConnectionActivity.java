@@ -28,6 +28,8 @@ public class ConnectionActivity extends AppCompatActivity {
     // mandatory for Bluetooth application
     private static final byte PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
+    private static final UUID my_uuid = UUID.fromString("73617af7-7acc-4e59-b5db-50502a57cd04");
+
     // declaration for device bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter;
 
@@ -62,6 +64,7 @@ public class ConnectionActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MapsActivity.class);
         //Start connection activity
         startActivity(intent);
+        new AcceptThread(mBluetoothAdapter, "Xapp_Server", my_uuid).run();
     }
 
     // handler for REFRESH button reaction
