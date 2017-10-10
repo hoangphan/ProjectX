@@ -58,6 +58,10 @@ public class ConnectionActivity extends AppCompatActivity {
     public void buttonConnectClicked(View view)
     {
         //TODO: implement conenction and go to next page
+        //Create an intent to open connectoini activity
+        Intent intent = new Intent(this, MapsActivity.class);
+        //Start connection activity
+        startActivity(intent);
     }
 
     // handler for REFRESH button reaction
