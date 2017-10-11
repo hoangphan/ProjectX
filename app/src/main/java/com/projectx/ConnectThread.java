@@ -4,6 +4,7 @@ package com.projectx;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+
 import android.os.Handler;
 import android.util.Log;
 

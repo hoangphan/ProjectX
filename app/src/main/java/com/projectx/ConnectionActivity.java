@@ -14,11 +14,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+
 
 
 import java.util.ArrayList;
 import java.util.UUID;
+
+import static com.projectx.Notification.NotifyToast;
 
 public class ConnectionActivity extends AppCompatActivity {
 
@@ -40,6 +42,9 @@ public class ConnectionActivity extends AppCompatActivity {
     // declaration for selected destination device address
     private String mAddress;
 
+    // declaration for context of application
+    private Context context;
+
     // declaration for list of query devices
     private ListView listView;
     private ArrayList<String> mDeviceList = new ArrayList<String>();
@@ -49,6 +54,8 @@ public class ConnectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection);
         listView = (ListView) findViewById(R.id.listView);
+
+        context = getApplicationContext();
         //Set background color for selected item
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -58,8 +65,7 @@ public class ConnectionActivity extends AppCompatActivity {
 
                 String name = device[0];
                 String address = device[1];
-                NotifyToast("Selected device name: " + name);
-                NotifyToast("Selected device address: " + address);
+                NotifyToast("Selected device address: " + address, context);
 
                 mAddress= address;
             }
@@ -98,7 +104,7 @@ public class ConnectionActivity extends AppCompatActivity {
 
         if (mBluetoothAdapter == null) {
             // Device does not support Bluetooth
-            NotifyToast("No adapter found");
+            NotifyToast("No adapter found", context);
         }
         else
         {
@@ -125,7 +131,8 @@ public class ConnectionActivity extends AppCompatActivity {
                             PERMISSION_REQUEST_COARSE_LOCATION);
                 }
             }
-            NotifyToast("Adapter OK");
+
+            NotifyToast("Adapter OK", context);
             // asynchronous discovery - heavy activity takes 12 seconds of query (page scan, inquiry scan)
             mBluetoothAdapter.startDiscovery();
             IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -146,15 +153,5 @@ public class ConnectionActivity extends AppCompatActivity {
         }
     };
 
-
-    public void NotifyToast(String message)
-    {
-        Context context = getApplicationContext();
-        CharSequence text = message;
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
 }
 
