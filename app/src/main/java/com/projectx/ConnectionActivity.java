@@ -29,10 +29,16 @@ public class ConnectionActivity extends AppCompatActivity {
     // mandatory for Bluetooth application
     private static final byte PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
-    private static final UUID my_uuid = UUID.fromString("73617af7-7acc-4e59-b5db-50502a57cd04");
+    private static final UUID my_uuid = UUID.fromString("3f53fed4-a97f-11e7-9ba2-4f25b7e20d64");
 
     // declaration for device bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter;
+
+    // declaration for selected destination device
+    private BluetoothDevice mBluetoothDevice;
+
+    // declaration for selected destination device address
+    private String mAddress;
 
     // declaration for list of query devices
     private ListView listView;
@@ -48,6 +54,14 @@ public class ConnectionActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
                 view.setSelected(true);
+                String[] device = ((String)listView.getItemAtPosition(position)).split("\n");
+
+                String name = device[0];
+                String address = device[1];
+                NotifyToast("Selected device name: " + name);
+                NotifyToast("Selected device address: " + address);
+
+                mAddress= address;
             }
         });
 
@@ -60,12 +74,14 @@ public class ConnectionActivity extends AppCompatActivity {
      */
     public void buttonConnectClicked(View view)
     {
-        //TODO: implement conenction and go to next page
-        //Create an intent to open connectoini activity
-        Intent intent = new Intent(this, MapsActivity.class);
-        //Start connection activity
-        startActivity(intent);
-        new AcceptThread(mBluetoothAdapter, "Xapp_Server", my_uuid).run();
+        //Create an intent to open map activity
+        //Intent intent = new Intent(this, MapsActivity.class);
+        //Start Map activity
+        //startActivity(intent);
+
+        mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(mAddress);
+
+        new ConnectThread(mBluetoothDevice, mBluetoothAdapter, my_uuid).start();
     }
 
     // handler for REFRESH button reaction
@@ -125,7 +141,6 @@ public class ConnectionActivity extends AppCompatActivity {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 mDeviceList.add(device.getName() + "\n" + device.getAddress());
-                NotifyToast(device.getName() + "\n" + device.getAddress());
                 listView.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, mDeviceList));
             }
         }
