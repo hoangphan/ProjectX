@@ -7,4 +7,4 @@
 /build
 /captures
 .externalNativeBuild
-app/src/main/java/com/projectx/ConnectionActivity.java
+app/src/debug/res/values/google_maps_api.xml
