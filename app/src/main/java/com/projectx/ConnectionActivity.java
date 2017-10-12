@@ -81,13 +81,13 @@ public class ConnectionActivity extends AppCompatActivity {
     public void buttonConnectClicked(View view)
     {
         //Create an intent to open map activity
-        //Intent intent = new Intent(this, MapsActivity.class);
+        Intent intent = new Intent(this, MapsActivity.class);
         //Start Map activity
-        //startActivity(intent);
+        startActivity(intent);
 
-        mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(mAddress);
+        //mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(mAddress);
 
-        new ConnectThread(mBluetoothDevice, mBluetoothAdapter, my_uuid).start();
+        //new ConnectThread(mBluetoothDevice, mBluetoothAdapter, my_uuid).start();
     }
 
     // handler for REFRESH button reaction
