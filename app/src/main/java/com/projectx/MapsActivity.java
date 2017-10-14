@@ -19,6 +19,7 @@ import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,7 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     PlaceAutocompleteFragment autocompleteFragment;
     private static final String TAG = "MainActivity";
     //Selected place on input form
-    public Place selectedPlace = null;
+    private Place selectedPlace = null;
 
 
 
@@ -93,6 +94,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName());
                 selectedPlace = place;
+                mMap.addMarker(new MarkerOptions().position(place.getLatLng()));
+                //Move camera to place, with zoom level 20 (max 21 is the nearest to the ground)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 20));
             }
             @Override
             public void onError(Status status) {
