@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
@@ -20,6 +21,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     PlaceAutocompleteFragment autocompleteFragment;
     private static final String TAG = "MainActivity";
+    //Selected place on input form
+    public Place selectedPlace = null;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +36,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         //Auto complete part
+
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
+        //Auto complete filter setting
+        //Set filter only for Vietnam location
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setCountry("VN")
+                .build();
 
+        autocompleteFragment.setFilter(typeFilter);
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName());
+                selectedPlace = place;
             }
 
 
