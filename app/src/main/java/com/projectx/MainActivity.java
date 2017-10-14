@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     public void startButtonClicked(View view)
     {
         //Create an intent to open connection activity
-        Intent intent = new Intent(this, ConnectionActivity.class);
+        Intent intent = new Intent(this, MapsActivity.class);
         //Start connection activity
         startActivity(intent);
 
