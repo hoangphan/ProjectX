@@ -22,18 +22,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     PlaceAutocompleteFragment autocompleteFragment;
     private static final String TAG = "MainActivity";
     //Selected place on input form
-    public Place selectedPlace = null;
+    private Place selectedPlace = null;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                //.findFragmentById(R.id.map);
-        //mapFragment.getMapAsync(this);
-
-
+        final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         //Auto complete part
 
@@ -54,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName());
                 selectedPlace = place;
+                mMap.addMarker(new MarkerOptions().position(place.getLatLng()));
             }
 
 
