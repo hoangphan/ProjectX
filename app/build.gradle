@@ -29,6 +29,10 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.0-beta.1@aar') {
+        transitive=true
+    }
+
     compile 'com.google.android.gms:play-services:11.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.android.gms:play-services-maps:11.0.4'

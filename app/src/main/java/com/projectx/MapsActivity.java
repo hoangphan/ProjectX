@@ -37,9 +37,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //Selected place on input form
     private Place selectedPlace = null;
 
-
-
-
     private CameraPosition mCameraPosition;
 
     // The entry points to the Places API.
@@ -54,7 +51,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private boolean mLocationPermissionGranted;
+    private boolean mLocationPermissionGranted = false;
+
+    private boolean mLocationServiceEnabled = false;
 
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
@@ -125,10 +124,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
+        getLocationPermission();
 
     }
-
 
     private void getLocationPermission() {
     /*
@@ -161,18 +159,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         }
-        updateLocationUI();
     }
+
+
 
     public void onMapReady(GoogleMap map) {
         mMap = map;
 
-        // Do other setup activities here too, as described elsewhere in this tutorial.
-
-        // Turn on the My Location layer and the related control on the map.
         updateLocationUI();
 
-        // Get the current location of the device and set the position of the map.
         getDeviceLocation();
     }
 
@@ -207,11 +202,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
+
+                            //mMap.setMyLocationEnabled(true);
+                            mMap.getUiSettings().setMyLocationButtonEnabled(true);
                             // Set the map's camera position to the current location of the device.
                             mLastKnownLocation = (Location) task.getResult();
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
