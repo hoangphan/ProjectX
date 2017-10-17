@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.projectx.MainActivity">
 
-    <com.mapbox.mapboxsdk.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        mapbox:mapbox_cameraTargetLat="10.814553"
-        mapbox:mapbox_cameraTargetLng="106.595494"
-        mapbox:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10"
-        mapbox:mapbox_cameraZoom="11" />
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:gravity="center"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/button_background"
+            android:elevation="1dp"
+            android:onClick="startButtonClicked"
+            android:text="start"
+            android:textColor="#d5feff" />
+
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>
