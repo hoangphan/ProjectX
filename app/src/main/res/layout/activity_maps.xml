@@ -16,17 +16,21 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/map" />
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+
+    <RelativeLayout
+        xmlns:mapbox="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="455dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp" />
+        android:layout_height="match_parent">
+
+        <com.mapbox.mapboxsdk.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            mapbox:mapbox_cameraTargetLat="10.814553"
+            mapbox:mapbox_cameraTargetLng="106.595494"
+            mapbox:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10"
+            mapbox:mapbox_cameraZoom="11" />
+
+    </RelativeLayout>
 
 </LinearLayout>
