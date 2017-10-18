@@ -80,19 +80,6 @@ public class MapsActivity extends FragmentActivity {
         Mapbox.getInstance(this, MAPBOX_ACCESS_TOKEN);
         mMapView = (MapView) findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(MapboxMap mapboxMap) {
-
-                // Customize map with markers, polylines, etc.
-                mMapboxMap = mapboxMap;
-                mapboxMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(48.85819, 2.29458))
-                        .title("Eiffel Tower")
-                );
-
-            }
-        });
 
     }
 }
