@@ -30,6 +30,7 @@ public class MapsActivity extends FragmentActivity {
     private MapboxMap mMapboxMap;
     private Place mSelectedPlace = null;
     private Marker mMarkerFromSelectedPlace = null;
+    int feature1;
 
 
     protected void onCreate(Bundle savedInstanceState) {
