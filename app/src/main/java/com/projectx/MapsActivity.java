@@ -1,30 +1,22 @@
 package com.projectx;
 
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.places.AutocompleteFilter;
-import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 
 public class MapsActivity extends FragmentActivity {
@@ -32,32 +24,11 @@ public class MapsActivity extends FragmentActivity {
     PlaceAutocompleteFragment autocompleteFragment;
     private static final String TAG = "MainActivity";
 
-    // The entry points to the Places API.
-    private GeoDataClient mGeoDataClient;
-    private PlaceDetectionClient mPlaceDetectionClient;
-
-    // The entry point to the Fused Location Provider.
-    private FusedLocationProviderClient mFusedLocationProviderClient;
-
-    // A default location (Sydney, Australia) and default zoom to use when location permission is
-    // not granted.
-    private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
-    private static final int DEFAULT_ZOOM = 15;
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-
     // Used for selecting the current place.
     private static final java.lang.String MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoiaG9hbmdwaGFuIiwiYSI6ImNqOHN2eXY0ZzBlYmczMnAwbTQyNXVhYWkifQ.BbvO9XZQoo0P8qptKXAcVw";
-<<<<<<< HEAD
     private MapView mMapView;
     private MapboxMap mMapboxMap;
     private Place mSelectedPlace = null;
-    private Marker mMarkerFromSelectedPlace = null;
-    int feature1;
-=======
-    private MapView mapView;
-    private MapboxMap myMapboxMap;
-    private Place selectedPlace = null;
->>>>>>> parent of f7860e1... Move camera to selected position
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,17 +52,22 @@ public class MapsActivity extends FragmentActivity {
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName());
-                selectedPlace = place;
+                mSelectedPlace = place;
                 double latitude = place.getLatLng().latitude;
                 double longitude = place.getLatLng().longitude;
-<<<<<<< HEAD
-                mMarkerFromSelectedPlace = mMapboxMap.addMarker(new MarkerOptions()
-=======
-                myMapboxMap.addMarker(new MarkerOptions()
->>>>>>> parent of f7860e1... Move camera to selected position
+                mMapboxMap.addMarker(new MarkerOptions()
                         .position(new LatLng(latitude, longitude))
                         .title("Selected place")
                 );
+
+                CameraPosition position = new CameraPosition.Builder()
+                        .target(new LatLng(latitude, longitude)) // Sets the new camera position
+                        .zoom(15) // Sets the zoom to level 10
+                        .tilt(0) // Set the camera tilt to 20 degrees
+                        .build(); // Builds the CameraPosition object from the builder
+
+                //Move camera to new marker position
+                mMapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position));
             }
             @Override
             public void onError(Status status) {
@@ -101,18 +77,14 @@ public class MapsActivity extends FragmentActivity {
         });
 
         Mapbox.getInstance(this, MAPBOX_ACCESS_TOKEN);
-<<<<<<< HEAD
         mMapView = (MapView) findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
-=======
-        mapView = (MapView) findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(new OnMapReadyCallback() {
+        mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
 
                 // Customize map with markers, polylines, etc.
-                myMapboxMap = mapboxMap;
+                mMapboxMap = mapboxMap;
                 mapboxMap.addMarker(new MarkerOptions()
                         .position(new LatLng(48.85819, 2.29458))
                         .title("Eiffel Tower")
@@ -120,7 +92,6 @@ public class MapsActivity extends FragmentActivity {
 
             }
         });
->>>>>>> parent of f7860e1... Move camera to selected position
 
     }
 }
