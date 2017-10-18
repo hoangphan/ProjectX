@@ -29,6 +29,7 @@ public class MapsActivity extends FragmentActivity {
     private MapView mMapView;
     private MapboxMap mMapboxMap;
     private Place mSelectedPlace = null;
+    private Marker mMarkerFromSelectedPlace = null;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class MapsActivity extends FragmentActivity {
                 mSelectedPlace = place;
                 double latitude = place.getLatLng().latitude;
                 double longitude = place.getLatLng().longitude;
-                mMapboxMap.addMarker(new MarkerOptions()
+                mMarkerFromSelectedPlace = mMapboxMap.addMarker(new MarkerOptions()
                         .position(new LatLng(latitude, longitude))
                         .title("Selected place")
                 );
