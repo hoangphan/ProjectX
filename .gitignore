@@ -8,5 +8,4 @@
 /captures
 .externalNativeBuild
 app/src/debug/res/values/google_maps_api.xml
-.idea/workspace.xml___jb_tmp___
-.idea/misc.xml
+.idea/*
