@@ -3,6 +3,7 @@ package com.projectx;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Button;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
@@ -20,21 +21,42 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 
 public class MapsActivity extends FragmentActivity {
+    /////////////////////////////////////////////////////////////////////////////
+    //                                                                         //
+    //              Attributes belong to GoogleMap                             //
+    //                                                                         //
+    /////////////////////////////////////////////////////////////////////////////
 
     PlaceAutocompleteFragment autocompleteFragment;
+
+
+
     private static final String TAG = "MainActivity";
 
+    /////////////////////////////////////////////////////////////////////////////
+    //                                                                         //
+    //              Attributes belong to MapBox                                //
+    //                                                                         //
+    /////////////////////////////////////////////////////////////////////////////
     // Used for selecting the current place.
     private static final java.lang.String MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoiaG9hbmdwaGFuIiwiYSI6ImNqOHN2eXY0ZzBlYmczMnAwbTQyNXVhYWkifQ.BbvO9XZQoo0P8qptKXAcVw";
     private MapView mMapView;
     private MapboxMap mMapboxMap;
     private Place mSelectedPlace = null;
+    private Button mPositionButton;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        mMapBoxInit(savedInstanceState);
+
+        mGgSearchBoxInit();
+
+    }
+
+    private void mGgSearchBoxInit() {
         //Auto complete part
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -75,9 +97,12 @@ public class MapsActivity extends FragmentActivity {
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
+    }
 
-        Mapbox.getInstance(this, MAPBOX_ACCESS_TOKEN);
+    private void mMapBoxInit(Bundle savedInstanceState){
+        Mapbox.getInstance(this.getApplicationContext(), MAPBOX_ACCESS_TOKEN);
         mMapView = (MapView) findViewById(R.id.mapView);
+
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -88,6 +113,6 @@ public class MapsActivity extends FragmentActivity {
 
             }
         });
-
     }
+
 }
