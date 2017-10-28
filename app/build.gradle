@@ -29,12 +29,22 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    
-    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.0-beta.1@aar') {
+
+
+
+
+    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.0-beta.3@aar') {
         transitive=true
     }
-
     compile 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.6.2'
+
+    compile ('com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.6.2') {
+        transitive = true
+    }
+
+
+
+
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
 
 

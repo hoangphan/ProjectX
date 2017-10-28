@@ -7,6 +7,7 @@
     android:weightSum="1">
 
 
+
     <fragment
         android:id="@+id/place_autocomplete_fragment"
         android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
@@ -26,10 +27,10 @@
             android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            mapbox:mapbox_cameraTargetLat="10.814553"
-            mapbox:mapbox_cameraTargetLng="106.595494"
-            mapbox:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10"
-            mapbox:mapbox_cameraZoom="11" />
+            mapbox:mapbox_styleUrl="@string/mapbox_style_mapbox_streets"
+            mapbox:mapbox_cameraTargetLat="38.9098"
+            mapbox:mapbox_cameraTargetLng="-77.0295"
+            mapbox:mapbox_cameraZoom="12" />
 
     </RelativeLayout>
 
