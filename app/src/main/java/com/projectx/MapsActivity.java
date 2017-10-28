@@ -140,7 +140,12 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
                 mSelectedPlace = place;
                 double latitude = place.getLatLng().latitude;
                 double longitude = place.getLatLng().longitude;
-                mMapboxMap.addMarker(new MarkerOptions()
+
+                if (destinationMarker != null) {
+                    mMapboxMap.removeMarker(destinationMarker);
+                }
+
+                destinationMarker = mMapboxMap.addMarker(new MarkerOptions()
                         .position(new LatLng(latitude, longitude))
                         .title("Selected place")
                 );
