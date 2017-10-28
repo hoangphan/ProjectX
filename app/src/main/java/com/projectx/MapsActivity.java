@@ -52,11 +52,7 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
     /////////////////////////////////////////////////////////////////////////////
 
     PlaceAutocompleteFragment autocompleteFragment;
-
-
-
-
-    private static final String TAG_M = "MainActivity";
+    private Place mSelectedPlace;
 
     /////////////////////////////////////////////////////////////////////////////
     //                                                                         //
@@ -71,18 +67,13 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
     private LocationLayerPlugin locationPlugin;
     private LocationEngine locationEngine;
 
-    private Place mSelectedPlace;
-
-    // variables for adding a marker
     private Marker destinationMarker;
     private LatLng originCoord;
     private LatLng destinationCoord;
     private Location originLocation;
-
     private Position originPosition;
     private Position destinationPosition;
     private DirectionsRoute currentRoute;
-    private static final String TAG_R = "DirectionsActivity";
     private NavigationMapRoute navigationMapRoute;
 
     /////////////////////////////////////////////////////////////////////////////
@@ -92,6 +83,8 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
     /////////////////////////////////////////////////////////////////////////////
 
     private Button startNavButton;
+    private static final String TAG_M = "MainActivity";
+    private static final String TAG_R = "DirectionsActivity";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,9 +154,10 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
                 //Move camera to new marker position
                 mMapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position));
 
+                // enable start navigation button
+                // could get route and navigate from current position to the selected place
                 destinationPosition = Position.fromCoordinates(longitude, latitude);
                 originPosition = Position.fromCoordinates(originCoord.getLongitude(), originCoord.getLatitude());
-
                 startNavButton.setEnabled(true);
                 startNavButton.setBackgroundResource(R.color.mapbox_blue);
             }
@@ -253,7 +247,6 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationPlugin() {
         // Check if permissions are enabled and if not request
-        Log.i(TAG_M, "enter here?");
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
             // Create an instance of LOST location engine
             initializeLocationEngine();
@@ -263,9 +256,7 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
         } else {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(this);
-            Log.i(TAG_M, "Come on - first love?");
         }
-        Log.i(TAG_M, "exit here?");
     }
 
     @SuppressWarnings( {"MissingPermission"})
