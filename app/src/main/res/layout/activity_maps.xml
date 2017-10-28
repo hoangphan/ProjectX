@@ -18,6 +18,17 @@
         android:layout_below="@+id/map" />
 
 
+    <Button
+        android:id="@+id/startNav"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_margin="20dp"
+        android:background="@color/mapboxGrayLight"
+        android:enabled="false"
+        android:padding="5dp"
+        android:text="StartNav"
+        android:textColor="@color/mapboxWhite" />
+
     <RelativeLayout
         xmlns:mapbox="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -28,9 +39,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             mapbox:mapbox_styleUrl="@string/mapbox_style_mapbox_streets"
-            mapbox:mapbox_cameraTargetLat="38.9098"
-            mapbox:mapbox_cameraTargetLng="-77.0295"
-            mapbox:mapbox_cameraZoom="12" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+        </com.mapbox.mapboxsdk.maps.MapView>
 
     </RelativeLayout>
 
