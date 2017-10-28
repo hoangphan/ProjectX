@@ -89,34 +89,10 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Mapbox.getInstance(this, getString(R.string.access_token));
         setContentView(R.layout.activity_maps);
-
-        startNavButton = (Button) findViewById(R.id.startNav);
-        startNavButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onStartNav(view);
-            }
-        });
-
         mGgSearchBoxInit();
         mMapBoxInit(savedInstanceState);
-    }
-
-    public void onStartNav(View view) {
-
-        Position origin = originPosition;
-        Position destination = destinationPosition;
-
-        // Pass in your Amazon Polly pool id for speech synthesis using Amazon Polly
-        // Set to null to use the default Android speech synthesizer
-        String awsPoolId = null;
-
-        boolean simulateRoute = true;
-
-        // Call this method with Context from within an Activity
-        NavigationLauncher.startNavigation(MapsActivity.this, origin, destination,
-                awsPoolId, simulateRoute);
     }
 
     private void mGgSearchBoxInit() {
@@ -163,6 +139,7 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
                 // could get route and navigate from current position to the selected place
                 destinationPosition = Position.fromCoordinates(longitude, latitude);
                 originPosition = Position.fromCoordinates(originCoord.getLongitude(), originCoord.getLatitude());
+                getRoute(originPosition, destinationPosition);
                 startNavButton.setEnabled(true);
                 startNavButton.setBackgroundResource(R.color.mapbox_blue);
             }
@@ -175,7 +152,7 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
     }
 
     private void mMapBoxInit(Bundle savedInstanceState){
-        Mapbox.getInstance(this, getString(R.string.access_token));
+
         mMapView = (MapView) findViewById(R.id.mapView);
 
         mMapView.onCreate(savedInstanceState);
@@ -185,6 +162,7 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
 
                 // Customize map with markers, polylines, etc.
                 mMapboxMap = mapboxMap;
+
                 enableLocationPlugin();
 
                 mMapboxMap.setOnMapClickListener(new MapboxMap.OnMapClickListener() {
@@ -202,11 +180,29 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
 
                         destinationPosition = Position.fromCoordinates(destinationCoord.getLongitude(), destinationCoord.getLatitude());
                         originPosition = Position.fromCoordinates(originCoord.getLongitude(), originCoord.getLatitude());
+                        getRoute(originPosition, destinationPosition);
                         startNavButton.setEnabled(true);
                         startNavButton.setBackgroundResource(R.color.mapbox_blue);
                     };
-
                 });
+                startNavButton = (Button) findViewById(R.id.startNav);
+                startNavButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        Position origin = originPosition;
+                        Position destination = destinationPosition;
+
+                        // Pass in your Amazon Polly pool id for speech synthesis using Amazon Polly
+                        // Set to null to use the default Android speech synthesizer
+                        String awsPoolId = null;
+
+                        boolean simulateRoute = true;
+
+                        // Call this method with Context from within an Activity
+                        NavigationLauncher.startNavigation(MapsActivity.this, origin, destination,
+                                awsPoolId, simulateRoute);
+                    }
+                });
+
 
             }
         });
@@ -237,7 +233,7 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
                         if (navigationMapRoute != null) {
                             navigationMapRoute.removeRoute();
                         } else {
-                            navigationMapRoute = new NavigationMapRoute(null, mMapView, mMapboxMap);
+                            navigationMapRoute = new NavigationMapRoute(null, mMapView, mMapboxMap, R.style.NavigationMapRoute);
                         }
                         navigationMapRoute.addRoute(currentRoute);
                     }
