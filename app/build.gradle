@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.projectx"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -24,30 +24,32 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-
-
-
-    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.0-beta.3@aar') {
+    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.1.4@aar') {
         transitive=true
     }
-    compile 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.6.2'
-
-    compile ('com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.6.2') {
-        transitive = true
-    }
-
-
+//    compile 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.6.2'
+//
+//
+//    compile ('com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.6.2') {
+//        transitive = true
+//    }
+    compile 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.6.0-SNAPSHOT'
+    compile 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.6.0-SNAPSHOT@aar'
+    compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.1.0'
 
 
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
-
-
     compile 'com.google.android.gms:play-services:11.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.android.gms:play-services-maps:11.0.4'
