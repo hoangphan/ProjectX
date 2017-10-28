@@ -195,7 +195,7 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
                         // Set to null to use the default Android speech synthesizer
                         String awsPoolId = null;
 
-                        boolean simulateRoute = true;
+                        boolean simulateRoute = false;
 
                         // Call this method with Context from within an Activity
                         NavigationLauncher.startNavigation(MapsActivity.this, origin, destination,
