@@ -21,7 +21,7 @@ import com.projectx.maps.MapsActivity;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static com.projectx.Notification.NotifyToast;
+import static com.projectx.utility.Notification.NotifyToast;
 
 public class ConnectionActivity extends AppCompatActivity {
 

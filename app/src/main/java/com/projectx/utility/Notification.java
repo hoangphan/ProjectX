@@ -1,4 +1,4 @@
-package com.projectx;
+package com.projectx.utility;
 
 import android.content.Context;
 import android.widget.Toast;

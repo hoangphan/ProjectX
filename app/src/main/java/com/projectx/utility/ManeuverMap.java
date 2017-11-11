@@ -1,8 +1,9 @@
-package com.projectx;
+package com.projectx.utility;
+
+import com.projectx.R;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 import static com.mapbox.services.android.Constants.STEP_MANEUVER_TYPE_ARRIVE;
 import static com.mapbox.services.android.Constants.STEP_MANEUVER_TYPE_CONTINUE;

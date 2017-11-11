@@ -1,4 +1,4 @@
-package com.projectx;
+package com.projectx.utility;
 
 public class Constants {
 

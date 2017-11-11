@@ -28,8 +28,8 @@ import com.mapbox.services.api.directions.v5.models.StepManeuver;
 import com.mapbox.services.api.utils.turf.TurfConstants;
 import com.mapbox.services.api.utils.turf.TurfHelpers;
 import com.mapbox.services.commons.models.Position;
-import com.projectx.Constants;
-import com.projectx.ManeuverMap;
+import com.projectx.utility.Constants;
+import com.projectx.utility.ManeuverMap;
 import com.projectx.R;
 import com.projectx.location.GoogleLocationEngine;
 
@@ -46,9 +46,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.mapbox.services.android.telemetry.location.LocationEnginePriority.HIGH_ACCURACY;
-import static com.projectx.Constants.MAPBOX_ACCESS_TOKEN;
-import static com.projectx.Constants.MPH_DOUBLE;
-import static com.projectx.Constants.PLACE_LOCATION_EXTRA;
+import static com.projectx.utility.Constants.MAPBOX_ACCESS_TOKEN;
+import static com.projectx.utility.Constants.MPH_DOUBLE;
+import static com.projectx.utility.Constants.PLACE_LOCATION_EXTRA;
 
 public class DisplayActivity extends AppCompatActivity implements LocationEngineListener,
   ProgressChangeListener, MilestoneEventListener, Callback<DirectionsResponse>, TextToSpeech.OnInitListener {
