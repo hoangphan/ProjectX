@@ -1,4 +1,4 @@
-package com.projectx;
+package com.projectx.connect;
 
 
 import android.bluetooth.BluetoothAdapter;

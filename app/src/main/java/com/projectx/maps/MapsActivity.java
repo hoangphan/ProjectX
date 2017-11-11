@@ -1,4 +1,4 @@
-package com.projectx;
+package com.projectx.maps;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -36,6 +36,7 @@ import com.mapbox.services.android.telemetry.permissions.PermissionsManager;
 import com.mapbox.services.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.services.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.services.commons.models.Position;
+import com.projectx.R;
 
 import java.util.List;
 
