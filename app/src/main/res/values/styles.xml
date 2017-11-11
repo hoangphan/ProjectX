@@ -22,4 +22,10 @@
         <item name="navigationViewSecondary">@color/mapboxBlue</item>
         <item name="navigationViewAccent">@color/mapboxPink</item>
     </style>
+
+
+    <style name="ProgressBarHorizontal" parent="android:Widget.Holo.Light.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_drawable</item>
+    </style>
+
 </resources>
