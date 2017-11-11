@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.projectx.maps.MapsActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -16,9 +18,9 @@ public class MainActivity extends AppCompatActivity {
     public void startButtonClicked(View view)
     {
         //Create an intent to open connection activity
-        Intent intent = new Intent(this, MapsActivity.class);
+        Intent map_activity = new Intent(this, MapsActivity.class);
         //Start connection activity
-        startActivity(intent);
+        startActivity(map_activity);
 
     }
 
