@@ -72,12 +72,14 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
     private LocationLayerPlugin locationPlugin;
     private LocationEngine locationEngine;
 
-    private Marker destinationMarker;
-    private LatLng originCoord;
+    private LatLng userCoord;
+    private Location userLocation;
+    private Position userPosition;
+
     private LatLng destinationCoord;
-    private Location originLocation;
-    private Position originPosition;
     private Position destinationPosition;
+    private Marker destinationMarker;
+
     private DirectionsRoute currentRoute;
     private NavigationMapRoute navigationMapRoute;
 
@@ -94,11 +96,18 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Mapbox.getInstance(this, getString(R.string.access_token));
-        setContentView(R.layout.activity_maps);
 
+        // BP: get instance of mapbox as early as possible
+        Mapbox.getInstance(this, getString(R.string.access_token));
+
+        // for UI
+        setContentView(R.layout.activity_maps);
         navButton_Init();
+
+        // google search box
         mGgSearchBoxInit();
+
+        // mapbox initialization
         mMapBoxInit(savedInstanceState);
     }
 
@@ -130,7 +139,7 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
 
                 destinationMarker = mMapboxMap.addMarker(new MarkerOptions()
                         .position(new LatLng(latitude, longitude))
-                        .title("Selected place")
+                        .title(place.getName().toString())
                 );
 
                 CameraPosition position = new CameraPosition.Builder()
@@ -145,11 +154,12 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
                 // enable start navigation button
                 // could get route and navigate from current position to the selected place
                 destinationPosition = Position.fromCoordinates(longitude, latitude);
-                originPosition = Position.fromCoordinates(originCoord.getLongitude(), originCoord.getLatitude());
-                getRoute(originPosition, destinationPosition);
+                userPosition = Position.fromCoordinates(userCoord.getLongitude(), userCoord.getLatitude());
+                getRoute(userPosition, destinationPosition);
                 startNavButton.setEnabled(true);
                 startNavButton.setBackgroundResource(R.color.mapbox_blue);
             }
+
             @Override
             public void onError(Status status) {
                 // TODO: Handle the error.
@@ -158,7 +168,7 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
         });
     }
 
-    private void mMapBoxInit(Bundle savedInstanceState){
+    private void mMapBoxInit(Bundle savedInstanceState) {
 
         mMapView = (MapView) findViewById(R.id.mapView);
 
@@ -186,8 +196,8 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
                                 .position(destinationCoord).title("hello there"));
 
                         destinationPosition = Position.fromCoordinates(destinationCoord.getLongitude(), destinationCoord.getLatitude());
-                        originPosition = Position.fromCoordinates(originCoord.getLongitude(), originCoord.getLatitude());
-                        getRoute(originPosition, destinationPosition);
+                        userPosition = Position.fromCoordinates(userCoord.getLongitude(), userCoord.getLatitude());
+                        getRoute(userPosition, destinationPosition);
                         startNavButton.setEnabled(true);
                         startNavButton.setBackgroundResource(R.color.mapbox_blue);
                     };
@@ -196,12 +206,12 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
         });
 
     }
-    private void navButton_Init()
-    {
+
+    private void navButton_Init() {
         startNavButton = (Button) findViewById(R.id.startNav);
         startNavButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Position origin = originPosition;
+                Position origin = userPosition;
                 Position destination = destinationPosition;
 
                 // Pass in your Amazon Polly pool id for speech synthesis using Amazon Polly
@@ -220,7 +230,7 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
 
     private void startDisplaying() {
         Intent display = new Intent(this, DisplayActivity.class);
-        display.putExtra(PLACE_LOCATION_EXTRA, originLocation);
+        display.putExtra(PLACE_LOCATION_EXTRA, userLocation);
         startActivity(display);
     }
 
@@ -261,35 +271,50 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
                 });
     }
 
+    private void activateLocationEngine() {
+        locationEngine = new LostLocationEngine(MapsActivity.this);
+        locationEngine.setPriority(LocationEnginePriority.HIGH_ACCURACY);
+        locationEngine.activate();
+    }
+
+    @SuppressWarnings( {"MissingPermission"})
+    private void initializeUserLocation()
+    {
+        // Create an instance of LOST location engine// open source location engine activation
+        // this is only allowed, when permission is granted to instantiate the location engine
+        activateLocationEngine();
+
+        // then now initialize user location
+        getUserLocation();
+
+        // to display the user location into the map
+        locationPlugin = new LocationLayerPlugin(mMapView, mMapboxMap, locationEngine);
+        locationPlugin.setLocationLayerEnabled(LocationLayerMode.TRACKING);
+    }
+
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationPlugin() {
         // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
-            // Create an instance of LOST location engine
-            initializeLocationEngine();
-
-            locationPlugin = new LocationLayerPlugin(mMapView, mMapboxMap, locationEngine);
-            locationPlugin.setLocationLayerEnabled(LocationLayerMode.TRACKING);
+            initializeUserLocation();
         } else {
+            
+            // request location permission
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(this);
         }
     }
 
     @SuppressWarnings( {"MissingPermission"})
-    private void initializeLocationEngine() {
-        locationEngine = new LostLocationEngine(MapsActivity.this);
-        locationEngine.setPriority(LocationEnginePriority.HIGH_ACCURACY);
-        locationEngine.activate();
-
+    private void getUserLocation() {
         Location lastLocation = locationEngine.getLastLocation();
         if (lastLocation != null) {
-            originLocation = lastLocation;
-            setCameraPosition(originLocation);
+            userLocation = lastLocation;
+            setCameraPosition(userLocation);
         } else {
             locationEngine.addLocationEngineListener(this);
         }
-        originCoord = new LatLng(originLocation.getLatitude(), originLocation.getLongitude());
+        userCoord = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
     }
 
     private void setCameraPosition(Location location) {
@@ -310,7 +335,7 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
     @Override
     public void onPermissionResult(boolean granted) {
         if (granted) {
-            enableLocationPlugin();
+            initializeUserLocation();
         } else {
             finish();
             Log.i(TAG_M, "Come on, please give me the permission!");
@@ -326,7 +351,7 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
-            originLocation = location;
+            userLocation = location;
             setCameraPosition(location);
             locationEngine.removeLocationEngineListener(this);
         }
