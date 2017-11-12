@@ -1,5 +1,6 @@
 package com.projectx.maps;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -37,12 +38,15 @@ import com.mapbox.services.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.services.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.services.commons.models.Position;
 import com.projectx.R;
+import com.projectx.display.DisplayActivity;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.projectx.utility.Constants.PLACE_LOCATION_EXTRA;
 
 
 public class MapsActivity extends FragmentActivity implements LocationEngineListener, PermissionsListener {
@@ -92,6 +96,8 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.access_token));
         setContentView(R.layout.activity_maps);
+
+        navButton_Init();
         mGgSearchBoxInit();
         mMapBoxInit(savedInstanceState);
     }
@@ -186,27 +192,36 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
                         startNavButton.setBackgroundResource(R.color.mapbox_blue);
                     };
                 });
-                startNavButton = (Button) findViewById(R.id.startNav);
-                startNavButton.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        Position origin = originPosition;
-                        Position destination = destinationPosition;
+            }
+        });
 
-                        // Pass in your Amazon Polly pool id for speech synthesis using Amazon Polly
-                        // Set to null to use the default Android speech synthesizer
-                        String awsPoolId = null;
+    }
+    private void navButton_Init()
+    {
+        startNavButton = (Button) findViewById(R.id.startNav);
+        startNavButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Position origin = originPosition;
+                Position destination = destinationPosition;
 
-                        boolean simulateRoute = false;
+                // Pass in your Amazon Polly pool id for speech synthesis using Amazon Polly
+                // Set to null to use the default Android speech synthesizer
+                String awsPoolId = null;
 
-                        // Call this method with Context from within an Activity
-                        NavigationLauncher.startNavigation(MapsActivity.this, origin, destination,
-                                awsPoolId, simulateRoute);
-                    }
-                });
+                boolean simulateRoute = false;
 
+                // Call this method with Context from within an Activity
+                NavigationLauncher.startNavigation(MapsActivity.this, origin, destination,
+                        awsPoolId, simulateRoute);
 
             }
         });
+    }
+
+    private void startDisplaying() {
+        Intent display = new Intent(this, DisplayActivity.class);
+        display.putExtra(PLACE_LOCATION_EXTRA, originLocation);
+        startActivity(display);
     }
 
     private void getRoute(Position origin, Position destination) {
@@ -270,7 +285,7 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
         Location lastLocation = locationEngine.getLastLocation();
         if (lastLocation != null) {
             originLocation = lastLocation;
-            setCameraPosition(lastLocation);
+            setCameraPosition(originLocation);
         } else {
             locationEngine.addLocationEngineListener(this);
         }
