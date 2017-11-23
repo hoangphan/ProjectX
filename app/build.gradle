@@ -48,12 +48,22 @@ dependencies {
     compile 'com.google.android.gms:play-services:11.2.0'
 
     // Mapbox SDKs
-    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.1.4@aar') {
+    // https://mvnrepository.com/artifact/com.mapbox.mapboxsdk/mapbox-android-sdk
+    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.0@aar') {
         transitive=true
     }
-    compile 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.6.0-SNAPSHOT'
-    compile 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.6.0-SNAPSHOT@aar'
-    compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.1.0'
+
+    // Mapbox android navigation (open source)
+    // https://mvnrepository.com/artifact/com.mapbox.mapboxsdk/mapbox-android-navigation
+    compile 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.7.0'
+
+    // Mapbox navigation UI
+    // https://mvnrepository.com/artifact/com.mapbox.mapboxsdk/mapbox-android-navigation-ui
+    compile 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.7.0@aar'
+
+    // Mapbox android plugin location layer
+    // https://mvnrepository.com/artifact/com.mapbox.mapboxsdk/mapbox-android-plugin-locationlayer
+    compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.2.0'
 
     // Butter knife
     compile 'com.jakewharton:butterknife:8.6.0'
