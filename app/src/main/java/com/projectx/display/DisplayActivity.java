@@ -15,8 +15,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.services.android.location.LostLocationEngine;
 import com.mapbox.services.android.navigation.v5.milestone.MilestoneEventListener;
 import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation;
+import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 import com.mapbox.services.android.navigation.v5.routeprogress.ProgressChangeListener;
 import com.mapbox.services.android.navigation.v5.routeprogress.RouteProgress;
 import com.mapbox.services.android.telemetry.location.LocationEngine;
@@ -28,10 +31,9 @@ import com.mapbox.services.api.directions.v5.models.StepManeuver;
 import com.mapbox.services.api.utils.turf.TurfConstants;
 import com.mapbox.services.api.utils.turf.TurfHelpers;
 import com.mapbox.services.commons.models.Position;
+import com.projectx.R;
 import com.projectx.utility.Constants;
 import com.projectx.utility.ManeuverMap;
-import com.projectx.R;
-import com.projectx.location.GoogleLocationEngine;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -51,7 +53,7 @@ import static com.projectx.utility.Constants.MPH_DOUBLE;
 import static com.projectx.utility.Constants.PLACE_LOCATION_EXTRA;
 
 public class DisplayActivity extends AppCompatActivity implements LocationEngineListener,
-  ProgressChangeListener, MilestoneEventListener, Callback<DirectionsResponse>, TextToSpeech.OnInitListener {
+  ProgressChangeListener, MilestoneEventListener, TextToSpeech.OnInitListener {
 
   private static final String TAG = DisplayActivity.class.getSimpleName();
   private static final String ARRIVAL_STRING_FORMAT = "%tl:%tM %tp%n";
@@ -81,6 +83,8 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
   private LocationEngine locationEngine;
   private boolean mirroring;
   private TextToSpeech tts;
+
+  private DirectionsRoute mRoute;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -150,22 +154,6 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
   }
 
   @Override
-  public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
-    if (response.body() != null &&
-      response.body().getRoutes() != null &&
-      response.body().getRoutes().size() > 0) {
-      DirectionsRoute currentRoute = response.body().getRoutes().get(0);
-      navigation.setLocationEngine(locationEngine);
-      navigation.startNavigation(currentRoute);
-    }
-  }
-
-  @Override
-  public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
-    Log.e(TAG, throwable.getMessage());
-  }
-
-  @Override
   public void onInit(int status) {
     tts.setLanguage(Locale.getDefault());
   }
@@ -176,7 +164,7 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
   }
 
   private void activateLocationEngine() {
-    locationEngine = GoogleLocationEngine.getLocationEngine(this);
+    locationEngine = LostLocationEngine.getLocationEngine(this);
     locationEngine.setPriority(HIGH_ACCURACY);
     locationEngine.setInterval(0);
     locationEngine.setFastestInterval(1000);
@@ -202,12 +190,36 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
       Position destination = Position.fromLngLat(placeLocation.getLongitude(), placeLocation.getLatitude());
 
       if (currentUserPosition != null) {
-        //navigation.getRoute(currentUserPosition, destination, this);
+          getRoute(currentUserPosition, destination);
       } else {
         Toast.makeText(this, "Current Location is null", Toast.LENGTH_LONG).show();
       }
     }
   }
+    private void getRoute(Position origin, Position destination) {
+        NavigationRoute.builder()
+                .accessToken(Mapbox.getAccessToken())
+                .origin(origin)
+                .destination(destination)
+                .build()
+                .getRoute(new Callback<DirectionsResponse>() {
+                    @Override
+                    public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+                        if (response.body() == null) {
+                            return;
+                        } else if (response.body().getRoutes().size() < 1) {
+                            return;
+                        }
+                        mRoute = response.body().getRoutes().get(0);
+                        navigation.setLocationEngine(locationEngine);
+                        navigation.startNavigation(mRoute);
+                    }
+                    @Override
+                    public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
+                        Log.e(TAG, "Error: " + throwable.getMessage());
+                    }
+                });
+    }
 
   private void calculateMph(Location location) {
     if (location.hasSpeed()) {
