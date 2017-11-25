@@ -50,7 +50,9 @@ import retrofit2.Response;
 import static com.mapbox.services.android.telemetry.location.LocationEnginePriority.HIGH_ACCURACY;
 import static com.projectx.utility.Constants.MAPBOX_ACCESS_TOKEN;
 import static com.projectx.utility.Constants.MPH_DOUBLE;
-import static com.projectx.utility.Constants.PLACE_LOCATION_EXTRA;
+import static com.projectx.utility.Constants.PLACE_LOCATION_B_ATT;
+import static com.projectx.utility.Constants.PLACE_LOCATION_B_LAT;
+import static com.projectx.utility.Constants.PLACE_LOCATION_B_LONG;
 
 public class DisplayActivity extends AppCompatActivity implements LocationEngineListener,
   ProgressChangeListener, MilestoneEventListener, TextToSpeech.OnInitListener {
@@ -82,7 +84,7 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
   private MapboxNavigation navigation;
   private LocationEngine locationEngine;
   private boolean mirroring;
-  private TextToSpeech tts;
+//  private TextToSpeech tts;
 
   private DirectionsRoute mRoute;
 
@@ -93,7 +95,7 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
     ButterKnife.bind(this);
     hideNavigationFullscreen();
 
-    tts = new TextToSpeech(this, this);
+    //tts = new TextToSpeech(this, this);
 
     activateLocationEngine();
     initMapboxNavigation();
@@ -150,12 +152,12 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
 
   @Override
   public void onMilestoneEvent(RouteProgress routeProgress, String instruction, int identifier) {
-    tts.speak(instruction, TextToSpeech.QUEUE_FLUSH, null, null);
+    //tts.speak(instruction, TextToSpeech.QUEUE_FLUSH, null, null);
   }
 
   @Override
   public void onInit(int status) {
-    tts.setLanguage(Locale.getDefault());
+    //tts.setLanguage(Locale.getDefault());
   }
 
   private void hideNavigationFullscreen() {
@@ -185,16 +187,18 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
   }
 
   private void checkIntentExtras() {
-    if (getIntent().hasExtra(PLACE_LOCATION_EXTRA)) {
-      Location placeLocation = getIntent().getParcelableExtra(PLACE_LOCATION_EXTRA);
-      Position destination = Position.fromLngLat(placeLocation.getLongitude(), placeLocation.getLatitude());
+//      if (getIntent().hasExtra(PLACE_LOCATION_EXTRA)) {
+          double tLong = getIntent().getDoubleExtra(PLACE_LOCATION_B_LONG, 0.0);
+          double tLat = getIntent().getDoubleExtra(PLACE_LOCATION_B_LAT,0.0);
+          double tAtt = getIntent().getDoubleExtra(PLACE_LOCATION_B_ATT, 0.0);
+          Position destination = Position.fromLngLat(tLong, tLat);
 
-      if (currentUserPosition != null) {
-          getRoute(currentUserPosition, destination);
-      } else {
-        Toast.makeText(this, "Current Location is null", Toast.LENGTH_LONG).show();
-      }
-    }
+          if (currentUserPosition != null) {
+              getRoute(currentUserPosition, destination);
+          } else {
+              Toast.makeText(this, "Current Location is null", Toast.LENGTH_LONG).show();
+          }
+//      }
   }
     private void getRoute(Position origin, Position destination) {
         NavigationRoute.builder()
