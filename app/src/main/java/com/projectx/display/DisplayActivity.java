@@ -50,7 +50,6 @@ import retrofit2.Response;
 import static com.mapbox.services.android.telemetry.location.LocationEnginePriority.HIGH_ACCURACY;
 import static com.projectx.utility.Constants.MAPBOX_ACCESS_TOKEN;
 import static com.projectx.utility.Constants.MPH_DOUBLE;
-import static com.projectx.utility.Constants.PLACE_LOCATION_B_ATT;
 import static com.projectx.utility.Constants.PLACE_LOCATION_B_LAT;
 import static com.projectx.utility.Constants.PLACE_LOCATION_B_LONG;
 
@@ -190,7 +189,6 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
 //      if (getIntent().hasExtra(PLACE_LOCATION_EXTRA)) {
           double tLong = getIntent().getDoubleExtra(PLACE_LOCATION_B_LONG, 0.0);
           double tLat = getIntent().getDoubleExtra(PLACE_LOCATION_B_LAT,0.0);
-          double tAtt = getIntent().getDoubleExtra(PLACE_LOCATION_B_ATT, 0.0);
           Position destination = Position.fromLngLat(tLong, tLat);
 
           if (currentUserPosition != null) {

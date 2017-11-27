@@ -45,10 +45,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.projectx.utility.Constants.PLACE_LOCATION_A_ATT;
 import static com.projectx.utility.Constants.PLACE_LOCATION_A_LAT;
 import static com.projectx.utility.Constants.PLACE_LOCATION_A_LONG;
-import static com.projectx.utility.Constants.PLACE_LOCATION_B_ATT;
 import static com.projectx.utility.Constants.PLACE_LOCATION_B_LAT;
 import static com.projectx.utility.Constants.PLACE_LOCATION_B_LONG;
 
@@ -236,12 +234,10 @@ public class MapsActivity extends FragmentActivity implements LocationEngineList
     private void startDisplaying() {
         Intent display = new Intent(this, DisplayActivity.class);
         display.putExtra(PLACE_LOCATION_A_LONG, userPosition.getLongitude());
-        display.putExtra(PLACE_LOCATION_A_LAT, userPosition.getLongitude());
-        display.putExtra(PLACE_LOCATION_A_ATT, userPosition.getAltitude());
+        display.putExtra(PLACE_LOCATION_A_LAT, userPosition.getLatitude());
 
         display.putExtra(PLACE_LOCATION_B_LONG, destinationPosition.getLongitude());
-        display.putExtra(PLACE_LOCATION_B_LAT, destinationPosition.getLongitude());
-        display.putExtra(PLACE_LOCATION_B_ATT, destinationPosition.getAltitude());
+        display.putExtra(PLACE_LOCATION_B_LAT, destinationPosition.getLatitude());
         startActivity(display);
     }
 
