@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 26
@@ -13,6 +12,11 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resValue "string", "google_maps_key", (project.findProperty("GOOGLE_MAPS_API_KEY") ?: "")
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath false
+            }
+        }
     }
     buildTypes {
         release {
@@ -32,6 +36,8 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
+
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -68,7 +74,7 @@ dependencies {
 
     // Butter knife
     compile 'com.jakewharton:butterknife:8.6.0'
-    apt 'com.jakewharton:butterknife-compiler:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 
     // Test
     testCompile 'junit:junit:4.12'

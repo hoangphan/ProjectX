@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 public class Controller extends Service {
     public Controller() {
-        
+
 
     }
     @Override
