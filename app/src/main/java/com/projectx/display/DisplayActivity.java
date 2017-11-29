@@ -83,7 +83,7 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
   private MapboxNavigation navigation;
   private LocationEngine locationEngine;
   private boolean mirroring;
-//  private TextToSpeech tts;
+  private TextToSpeech tts;
 
   private DirectionsRoute mRoute;
 
@@ -94,7 +94,7 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
     ButterKnife.bind(this);
     hideNavigationFullscreen();
 
-    //tts = new TextToSpeech(this, this);
+    tts = new TextToSpeech(this, this);
 
     activateLocationEngine();
     initMapboxNavigation();
@@ -151,12 +151,12 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
 
   @Override
   public void onMilestoneEvent(RouteProgress routeProgress, String instruction, int identifier) {
-    //tts.speak(instruction, TextToSpeech.QUEUE_FLUSH, null, null);
+    tts.speak(instruction, TextToSpeech.QUEUE_FLUSH, null, null);
   }
 
   @Override
   public void onInit(int status) {
-    //tts.setLanguage(Locale.getDefault());
+    tts.setLanguage(Locale.getDefault());
   }
 
   private void hideNavigationFullscreen() {
