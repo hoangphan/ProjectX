@@ -36,6 +36,9 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // lastest version of dagger
+    // https://github.com/google/dagger/releases
     annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
 
 
