@@ -27,25 +27,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
-        <activity
-            android:name=".maps.MapsActivity">
-
-        </activity>
+        <activity android:name=".maps.MapsActivity"></activity>
 
         <!-- Display (HUD) Activity -->
         <activity
             android:name=".display.DisplayActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-
-
+        <service
+            android:name=".Controller"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

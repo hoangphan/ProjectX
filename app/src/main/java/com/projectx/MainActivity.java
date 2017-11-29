@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.projectx.connect.ConnectionActivity;
-import com.projectx.maps.MapsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void startButtonClicked(View view)
     {
+
+        Intent mControllerService = new Intent (this, Controller.class);
+        startService(mControllerService);
         //Create an intent to open connection activity
         Intent map_activity = new Intent(this, ConnectionActivity.class);
         //Start connection activity
