@@ -1,6 +1,7 @@
 package com.projectx.display;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -14,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Vibrator;
+
 
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.services.android.location.LostLocationEngine;
@@ -34,6 +37,7 @@ import com.mapbox.services.commons.models.Position;
 import com.projectx.R;
 import com.projectx.utility.Constants;
 import com.projectx.utility.ManeuverMap;
+import com.projectx.utility.VibrationMap;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -92,9 +96,12 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_display);
     ButterKnife.bind(this);
-    hideNavigationFullscreen();
+      //Flag for setSystemUiVisibility(int): View has requested that the system navigation be temporarily hidden.
+      hideNavigationFullscreen();
 
     //tts = new TextToSpeech(this, this);
+
+
 
     activateLocationEngine();
     initMapboxNavigation();
@@ -246,6 +253,16 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
     LegStep upComingStep = progress.currentLegProgress().upComingStep();
     if (upComingStep != null) {
       maneuverImage.setImageResource(obtainManeuverResource(upComingStep));
+      // Get instance of Vibrator from current Context
+      Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+      // Vibrate for 400 milliseconds
+      if( progress.currentLegProgress().durationRemaining() < 5)
+      {
+        v.vibrate(Constants.VIB_REACH_STEP, 0);
+      }
+      else {
+        v.vibrate(obtainVibrationResource(upComingStep), 0);
+      }
       if (upComingStep.getManeuver() != null) {
         if (!TextUtils.isEmpty(upComingStep.getName())) {
           stepText.setText(upComingStep.getName());
@@ -267,6 +284,19 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
       }
     }
     return R.drawable.maneuver_starting;
+  }
+
+  private static long[] obtainVibrationResource(LegStep step) {
+    VibrationMap vibrationMap = new VibrationMap();
+    if (step != null && step.getManeuver() != null) {
+      StepManeuver maneuver = step.getManeuver();
+      if (!TextUtils.isEmpty(maneuver.getModifier())) {
+        return vibrationMap.getVibrationResource(maneuver.getType() + maneuver.getModifier());
+      } else {
+        return vibrationMap.getVibrationResource(maneuver.getType());
+      }
+    }
+    return Constants.VIB_NOTHING;
   }
 
   private static String formatTimeRemaining(double routeDurationRemaining) {

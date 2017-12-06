@@ -32,6 +32,7 @@ public class ManeuverMap {
 
   private Map<String, Integer> maneuverMap;
 
+
   public ManeuverMap() {
     maneuverMap = new HashMap<>();
     maneuverMap.put(STEP_MANEUVER_TYPE_TURN + STEP_MANEUVER_MODIFIER_UTURN,
@@ -177,6 +178,8 @@ public class ManeuverMap {
     maneuverMap.put(STEP_MANEUVER_TYPE_NEW_NAME + STEP_MANEUVER_MODIFIER_STRAIGHT,
       R.drawable.direction_notification_straight);
   }
+
+
 
   public int getManeuverResource(String maneuver) {
     if (maneuverMap.get(maneuver) != null) {
