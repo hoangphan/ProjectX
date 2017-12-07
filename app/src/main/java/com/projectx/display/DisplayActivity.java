@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +16,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Vibrator;
-
 
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.services.android.location.LostLocationEngine;
@@ -91,6 +90,8 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
 
   private DirectionsRoute mRoute;
 
+  private Vibrator mVib;
+
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -100,6 +101,7 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
       hideNavigationFullscreen();
 
     //tts = new TextToSpeech(this, this);
+    mVib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
 
 
@@ -110,6 +112,7 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
   @Override
   protected void onStop() {
     super.onStop();
+    mVib.cancel();
   }
 
   @Override
@@ -254,14 +257,13 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
     if (upComingStep != null) {
       maneuverImage.setImageResource(obtainManeuverResource(upComingStep));
       // Get instance of Vibrator from current Context
-      Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
       // Vibrate for 400 milliseconds
       if( progress.currentLegProgress().durationRemaining() < 5)
       {
-        v.vibrate(Constants.VIB_REACH_STEP, 0);
+        mVib.vibrate(Constants.VIB_REACH_STEP, 0);
       }
       else {
-        v.vibrate(obtainVibrationResource(upComingStep), 0);
+        mVib.vibrate(obtainVibrationResource(upComingStep), 0);
       }
       if (upComingStep.getManeuver() != null) {
         if (!TextUtils.isEmpty(upComingStep.getName())) {
