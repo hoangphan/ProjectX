@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SourceTree.iml" filepath="$PROJECT_DIR$/SourceTree.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ProjectX_ST.iml" filepath="$PROJECT_DIR$/ProjectX_ST.iml" />
+      <module fileurl="file://C:\Users\minhtri\Documents\ProjectX_ST\SourceTree.iml" filepath="C:\Users\minhtri\Documents\ProjectX_ST\SourceTree.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
