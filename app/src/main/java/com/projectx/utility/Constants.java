@@ -34,15 +34,16 @@ public class Constants {
   //Vibration patterns
 
 
-  public static final long VIB_DOT = 150;
+  public static final long VIB_DOT = 120;
   public static final long VIB_DASH = 500;
   public static final long[] VIB_REACH_STEP = {0, 2000, 780};
-  public static final long[] VIB_REACH_DESTINATION = {0, 5000};
-  public static final long VIB_S_SPACE = 250;
-  public static final long VIB_L_SPACE = 780;
+  public static final long VIB_S_SPACE = 350;
+  public static final long VIB_L_SPACE = 980;
   public static final long VIB_XL_SPACE = 1000;
   public static final long VIB_ZERO = 0;
   public static final long[] VIB_NOTHING = {0};
+  //3 DOTs 1 DASH
+  public static final long[] VIB_REACH_DESTINATION = {VIB_ZERO, VIB_DOT, VIB_S_SPACE, VIB_DOT, VIB_S_SPACE, VIB_DOT, VIB_S_SPACE, VIB_DASH, VIB_L_SPACE};
   public static final long[] VIB_PATTERN_DIRECTION_TURN_LEFT = {
           VIB_ZERO,
           VIB_DOT,
@@ -81,7 +82,8 @@ public class Constants {
           VIB_L_SPACE };
   public static final long[] VIB_PATTERN_DIRECTION_STRAIGHT= {
           VIB_ZERO,
-          VIB_XL_SPACE,
+          VIB_DASH,
+          VIB_S_SPACE,
           VIB_DOT,
           VIB_L_SPACE
   };

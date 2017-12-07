@@ -253,13 +253,13 @@ public class DisplayActivity extends AppCompatActivity implements LocationEngine
   }
 
   private void extractLegStep(RouteProgress progress) {
-    mVib.vibrate(Constants.VIB_S_SPACE);
+    mVib.cancel();
     LegStep upComingStep = progress.currentLegProgress().upComingStep();
     if (upComingStep != null) {
       maneuverImage.setImageResource(obtainManeuverResource(upComingStep));
       // Get instance of Vibrator from current Context
       // Vibrate for 400 milliseconds
-      if( progress.currentLeg().getDuration() < 2 || progress.currentLeg().getDistance() < 5)
+      if(upComingStep.getDuration() < 10 || upComingStep.getDistance() < 100)
       {
         mVib.vibrate(Constants.VIB_REACH_STEP, 0);
       }
